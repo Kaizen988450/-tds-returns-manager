@@ -583,22 +583,27 @@ function TDSReturnsManager() {
           </button>
         </div>
 
-        {/* main panel */}
+        {/* main panel — all tabs stay mounted, only visibility toggles, so an
+            in-flight upload/extraction on one tab survives switching away and back */}
         <div style={{ flex: 1, padding: 24, overflow: 'auto' }}>
-          {tab === 'deductor' && <DeductorPanel deductor={deductor} setDeductor={setDeductor} tanValid={tanValid} panValid={panValid} apiKey={apiKey} setApiKey={setApiKey} />}
-          {tab === 'challans' && (
+          <div style={{ display: tab === 'deductor' ? 'block' : 'none' }}>
+            <DeductorPanel deductor={deductor} setDeductor={setDeductor} tanValid={tanValid} panValid={panValid} apiKey={apiKey} setApiKey={setApiKey} />
+          </div>
+          <div style={{ display: tab === 'challans' ? 'block' : 'none' }}>
             <ChallansPanel challans={challans} addChallan={addChallan} updateChallan={updateChallan} removeChallan={removeChallan} apiKey={apiKey} />
-          )}
-          {tab === 'rows' && (
+          </div>
+          <div style={{ display: tab === 'rows' ? 'block' : 'none' }}>
             <RowsPanel form={form} rows={rows} challans={challans} addRow={addRow} updateRow={updateRow} removeRow={removeRow} apiKey={apiKey} />
-          )}
-          {tab === 'summary' && (
+          </div>
+          <div style={{ display: tab === 'summary' ? 'block' : 'none' }}>
             <SummaryPanel
               form={form} totals={totals} sectionWise={sectionWise} panIssues={panIssues}
               unlinked={unlinked} stampState={stampState} tanValid={tanValid} panValid={panValid} deductor={deductor}
             />
-          )}
-          {tab === 'export' && <ExportPanel exportWorkbook={exportWorkbook} form={form} fy={fy} quarter={quarter} rowCount={rows.length} challanCount={challans.length} />}
+          </div>
+          <div style={{ display: tab === 'export' ? 'block' : 'none' }}>
+            <ExportPanel exportWorkbook={exportWorkbook} form={form} fy={fy} quarter={quarter} rowCount={rows.length} challanCount={challans.length} />
+          </div>
         </div>
       </div>
     </div>
