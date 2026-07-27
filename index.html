@@ -687,6 +687,7 @@ function DeductorPanel({ deductor, setDeductor, tanValid, panValid, apiKey, setA
 function ChallansPanel({ challans, addChallan, updateChallan, removeChallan, apiKey }) {
   const [draft, setDraft] = useState({ bsrCode: '', date: '', challanSerialNo: '', section: '', tdsAmount: '', interest: '', fee234E: '', others: '', nil: false });
   const canAdd = draft.bsrCode && draft.date && draft.challanSerialNo;
+  const [showManualAdd, setShowManualAdd] = useState(false);
 
   const submit = () => {
     if (!canAdd) return;
@@ -842,6 +843,12 @@ function ChallansPanel({ challans, addChallan, updateChallan, removeChallan, api
         </div>
       )}
 
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+        <button className="tds-btn tds-btn-ghost" onClick={() => setShowManualAdd((v) => !v)}>
+          <Plus size={13} /> {showManualAdd ? 'Hide manual entry' : 'Add manually'}
+        </button>
+      </div>
+
       <div className="tds-card tds-scroll" style={{ overflow: 'auto' }}>
         <table>
           <thead>
@@ -876,6 +883,7 @@ function ChallansPanel({ challans, addChallan, updateChallan, removeChallan, api
                 </tr>
               );
             })}
+            {showManualAdd && (
             <tr>
               <td className="tds-mono" style={{ color: 'var(--ink-faint)' }}>+</td>
               <td><input value={draft.bsrCode} onChange={(e) => setDraft({ ...draft, bsrCode: e.target.value })} placeholder="7-digit BSR" style={{ width: 90 }} /></td>
@@ -896,6 +904,7 @@ function ChallansPanel({ challans, addChallan, updateChallan, removeChallan, api
               <td style={{ textAlign: 'center' }}><input type="checkbox" checked={draft.nil} onChange={(e) => setDraft({ ...draft, nil: e.target.checked })} /></td>
               <td><button className="tds-btn tds-btn-primary" disabled={!canAdd} onClick={submit} style={{ opacity: canAdd ? 1 : 0.4 }}><Plus size={13} /></button></td>
             </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -920,6 +929,7 @@ function RowsPanel({ form, rows, challans, addRow, updateRow, removeRow, apiKey 
 
   const canAdd = draft.pan && draft.name;
   const submit = () => { if (!canAdd) return; addRow(draft); resetDraft(); };
+  const [showManualAdd, setShowManualAdd] = useState(false);
 
   const onSectionChange = (val, setter) => {
     const r = rateOf(val);
@@ -1108,6 +1118,12 @@ function RowsPanel({ form, rows, challans, addRow, updateRow, removeRow, apiKey 
         </div>
       )}
 
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+        <button className="tds-btn tds-btn-ghost" onClick={() => setShowManualAdd((v) => !v)}>
+          <Plus size={13} /> {showManualAdd ? 'Hide manual entry' : 'Add manually'}
+        </button>
+      </div>
+
       <div className="tds-card tds-scroll" style={{ overflow: 'auto' }}>
         <table>
           <thead>
@@ -1152,6 +1168,7 @@ function RowsPanel({ form, rows, challans, addRow, updateRow, removeRow, apiKey 
                 </tr>
               );
             })}
+            {showManualAdd && (
             <tr>
               <td className="tds-mono" style={{ color: 'var(--ink-faint)' }}>+</td>
               <td><input value={draft.pan} onChange={(e) => setDraft({ ...draft, pan: e.target.value.toUpperCase() })} placeholder="PAN" style={{ width: 105 }} maxLength={10} /></td>
@@ -1181,6 +1198,7 @@ function RowsPanel({ form, rows, challans, addRow, updateRow, removeRow, apiKey 
               </td>
               <td><button className="tds-btn tds-btn-primary" disabled={!canAdd} onClick={submit} style={{ opacity: canAdd ? 1 : 0.4 }}><Plus size={13} /></button></td>
             </tr>
+            )}
           </tbody>
         </table>
       </div>
